@@ -19,3 +19,8 @@ out/
 Thumbs.db
 desktop.ini
 "@ | Out-File -FilePath ".gitignore" -Encoding utf8
+# Metadata IDE & build
+.project
+.classpath
+.settings/
+bin/
