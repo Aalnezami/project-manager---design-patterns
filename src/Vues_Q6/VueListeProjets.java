@@ -40,6 +40,8 @@ public class VueListeProjets extends JFrame implements Observateur {
 		JMenuItem itemAjouterPrj = new JMenuItem("+ Ajouter");
 		JMenuItem itemSupprimerPrj = new JMenuItem("- Supprimer");
 		JMenuItem itemModifNom = new JMenuItem("Modifier le nom");
+		JMenuItem itemModifDateDebut = new JMenuItem("Modifier la date de début");
+		JMenuItem itemModifDateFin = new JMenuItem("Modifier la date de fin");
 
 		JMenuItem itemAjouterTache = new JMenuItem("+ Ajouter une tache");
 		JMenuItem itemSupprimerTache = new JMenuItem("- Supprimer une tache");
@@ -53,6 +55,8 @@ public class VueListeProjets extends JFrame implements Observateur {
 		menuProjet.add(itemAjouterPrj);
 		menuProjet.add(itemSupprimerPrj);
 		menuProjet.add(itemModifNom);
+		menuProjet.add(itemModifDateDebut);
+		menuProjet.add(itemModifDateFin);
 
 		menuTaches.add(itemAjouterTache);
 		menuTaches.add(itemSupprimerTache);
@@ -158,22 +162,22 @@ public class VueListeProjets extends JFrame implements Observateur {
 		});
 
 		// modifier la date de début
-//        btnModifDateDebut.addActionListener(e -> {
-//            String selected = listProjets.getSelectedValue();
-//            if (selected != null) {
-//                String dateStr = JOptionPane.showInputDialog(this, "Nouvelle date de début (YYYY-MM-DD) :");
-//                if (dateStr != null && !dateStr.trim().isEmpty()) {
-//                    try {
-//                        LocalDate nouvelleDate = LocalDate.parse(dateStr);
-//                        controleur.modifierDateDebutProjet(selected, nouvelleDate);
-//                    } catch (Exception ex) {
-//                        JOptionPane.showMessageDialog(this, "Format de date invalide ou erreur : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
-//                    }
-//                }
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Veuillez sélectionner un projet.");
-//            }
-//        });
+        itemModifDateDebut.addActionListener(e -> {
+            String selected = listProjets.getSelectedValue();
+            if (selected != null) {
+                String dateStr = JOptionPane.showInputDialog(this, "Nouvelle date de début (YYYY-MM-DD) :");
+                if (dateStr != null && !dateStr.trim().isEmpty()) {
+                    try {
+                        LocalDate nouvelleDate = LocalDate.parse(dateStr);
+                        controleur.modifierDateDebutProjet(selected, nouvelleDate);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(this, ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Veuillez sélectionner un projet.");
+            }
+        });
 
 		/**********************************************************
 		 * gestion des taches, afficher la liste des taches d'un prj pour pouvoir en

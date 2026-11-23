@@ -21,7 +21,9 @@ public class MediateurFacade {
 	private Projet projetCourant;
 	private List<String> rapportImport = new ArrayList<>();
 	private FabriqueRapportImport FRI = new FabriqueRapportImport();
-	
+	private int dernierTotalImport = 0;
+	private int dernierNbImportes = 0;
+
 	public MediateurFacade(List<Projet> prjs, FabriqueProjet FP, VerificationProjet VP, FabriqueProjetJsonReader FPJR,
 			List<Observateur> LO) {
 		this.projets = prjs;
@@ -29,6 +31,22 @@ public class MediateurFacade {
 		this.verificateur = VP;
 		this.jsonReader = FPJR;
 		this.observateurs = LO;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public int getDernierTotalImport() {
+		return dernierTotalImport;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public int getDernierNbImportes() {
+		return dernierNbImportes;
 	}
 
 	/**********************************************************
@@ -246,7 +264,7 @@ public class MediateurFacade {
 		prj.getTeams().remove(equipeARetirer);
 		notifierObservateurs();
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -264,7 +282,8 @@ public class MediateurFacade {
 		rapportImport.clear();
 		List<Projet> projetsImportes = jsonReader.creerProjetsDepuisJSONFile(cheminFichier);
 		rapportImport.addAll(jsonReader.getRapportErreurs());
-
+		int nbAjoute = 0;
+		
 		boolean ajoute = false;
 		for (Projet p : projetsImportes) {
 			if (rechercherProjet(p.getNom()) != null) {
@@ -283,10 +302,13 @@ public class MediateurFacade {
 		}
 
 		if (ajoute) {
+			nbAjoute++;
 			this.notifierObservateurs();
 		}
-		
-		FRI.afficherRapport(parent, 0, 0, rapportImport);
+		this.dernierTotalImport = projetsImportes.size() + jsonReader.getRapportErreurs().size();
+		this.dernierNbImportes = nbAjoute;
+
+		FRI.afficherRapport(parent, this.dernierNbImportes, this.dernierTotalImport, rapportImport);
 	}
 
 	/**********************************************************
