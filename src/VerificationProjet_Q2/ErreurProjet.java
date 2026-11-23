@@ -1,0 +1,9 @@
+package VerificationProjet_Q2;
+
+public enum ErreurProjet {
+	NOM_VIDE,
+	DATES_INCOHERENTES,
+	DUREE_NON_POSITIVE,
+	NOMS_EQUIPES_NON_DISTINCTS,
+	TACHE_HORS_PROJET
+}
