@@ -1,14 +1,15 @@
-@"
 # Compilation & classes Java
 bin/
 target/
 out/
 *.class
 
-# Fichiers de configuration Eclipse
+# Fichiers & workspace Eclipse
 .project
 .classpath
 .settings/
+.metadata/
+**/.metadata/
 
 # Autres IDE
 .idea/
@@ -18,9 +19,3 @@ out/
 # Système Windows
 Thumbs.db
 desktop.ini
-"@ | Out-File -FilePath ".gitignore" -Encoding utf8
-# Metadata IDE & build
-.project
-.classpath
-.settings/
-bin/
