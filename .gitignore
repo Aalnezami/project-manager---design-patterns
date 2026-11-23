@@ -1,0 +1,21 @@
+@"
+# Compilation & classes Java
+bin/
+target/
+out/
+*.class
+
+# Fichiers de configuration Eclipse
+.project
+.classpath
+.settings/
+
+# Autres IDE
+.idea/
+*.iml
+.vscode/
+
+# Système Windows
+Thumbs.db
+desktop.ini
+"@ | Out-File -FilePath ".gitignore" -Encoding utf8
