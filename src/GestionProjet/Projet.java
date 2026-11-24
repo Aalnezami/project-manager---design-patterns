@@ -101,6 +101,20 @@ public class Projet implements Visitable {
 	
 	/**********************************************************
 	 * 
+	 * @param nomTache
+	 * @return
+	 */
+	public Tache getTacheByName(String nomTache) {
+		for(Tache t : this.getTaches()) {
+			if(t.getIntitule().equals(nomTache)) {
+				return t;
+			}
+		}
+		return null;
+	}
+	
+	/**********************************************************
+	 * 
 	 */
 	@Override
 	public void applique(Visiteur visiteur) {

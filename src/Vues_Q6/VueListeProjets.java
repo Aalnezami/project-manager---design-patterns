@@ -83,7 +83,9 @@ public class VueListeProjets extends JFrame implements Observateur {
 		listProjets.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		add(new JScrollPane(listProjets), BorderLayout.CENTER);
 
-		// gestion des évenements
+		/**********************************************************
+		 * gestion des actions sur un projet.
+		 */
 		// Ajouter un projet
 		btnAjouter.addActionListener(e -> {
 			String nom = JOptionPane.showInputDialog(this, "Nom du projet :");
@@ -162,27 +164,45 @@ public class VueListeProjets extends JFrame implements Observateur {
 		});
 
 		// modifier la date de début
-        itemModifDateDebut.addActionListener(e -> {
-            String selected = listProjets.getSelectedValue();
-            if (selected != null) {
-                String dateStr = JOptionPane.showInputDialog(this, "Nouvelle date de début (YYYY-MM-DD) :");
-                if (dateStr != null && !dateStr.trim().isEmpty()) {
-                    try {
-                        LocalDate nouvelleDate = LocalDate.parse(dateStr);
-                        controleur.modifierDateDebutProjet(selected, nouvelleDate);
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(this, ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Veuillez sélectionner un projet.");
-            }
-        });
+		itemModifDateDebut.addActionListener(e -> {
+			String selected = listProjets.getSelectedValue();
+			if (selected != null) {
+				String dateStr = JOptionPane.showInputDialog(this, "Nouvelle date de début (YYYY-MM-DD) :");
+				if (dateStr != null && !dateStr.trim().isEmpty()) {
+					try {
+						LocalDate nouvelleDate = LocalDate.parse(dateStr);
+						controleur.modifierDateDebutProjet(selected, nouvelleDate);
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(this, ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			} else {
+				JOptionPane.showMessageDialog(this, "Veuillez sélectionner un projet.");
+			}
+		});
+
+		// modifier la date de fin
+		itemModifDateFin.addActionListener(e -> {
+			String selected = listProjets.getSelectedValue();
+			if (selected != null) {
+				String dateStr = JOptionPane.showInputDialog(this, "Nouvelle date de début (YYYY-MM-DD) :");
+				if (dateStr != null && !dateStr.trim().isEmpty()) {
+					try {
+						LocalDate nouvelleDate = LocalDate.parse(dateStr);
+						controleur.modifierDateFinProjet(selected, nouvelleDate);
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(this, ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			} else {
+				JOptionPane.showMessageDialog(this, "Veuillez sélectionner un projet.");
+			}
+		});
 
 		/**********************************************************
-		 * gestion des taches, afficher la liste des taches d'un prj pour pouvoir en
-		 * supprimer ou ajouter ou modifier
+		 * gestion des taches.
 		 */
+		// ajouter une tache
 		itemAjouterTache.addActionListener(e -> {
 			String selected = listProjets.getSelectedValue();
 			if (selected == null) {
@@ -206,13 +226,42 @@ public class VueListeProjets extends JFrame implements Observateur {
 			if (res == JOptionPane.OK_OPTION && !titre.isEmpty() && !dur.isEmpty()) {
 				try {
 					Equipe eq = prj.getTeams().isEmpty() ? null : prj.getTeams().get(0);
-					//controleur.ajouterTacheAuProjet(prj.getNom(), new Tache(titre, Integer.parseInt(dur), eq));
+					controleur.ajouterTacheAuProjet(titre, Integer.parseInt(dur), eq);
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(this, ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
 		
+		// retirer une tache
+		itemSupprimerTache.addActionListener(e -> {
+			String selected = listProjets.getSelectedValue();
+			if (selected == null) {
+				JOptionPane.showMessageDialog(this, "Veuillez sélectionner un projet dans la liste.");
+				return;
+			}
+			Projet prj = controleur.rechercherProjet(selected);
+			if (prj == null) {
+				JOptionPane.showMessageDialog(this, "Le projet sélectionné est introuvable.");
+				return;
+			}
+			
+			// afficher la liste des taches du projet selectionne
+			DefaultListModel<String> listeTacheModel = new DefaultListModel<>();
+			JList<String> listTaches =  new JList<>(listeTacheModel); 
+			
+			listeTacheModel.clear();
+			for (Tache t : prj.getTaches()) {
+				listeTacheModel.addElement(t.getIntitule());
+			}
+			
+			listTaches.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);			
+			int res = JOptionPane.showConfirmDialog(this, new JScrollPane(listTaches), "Sélectionnez la tache à supprimer", JOptionPane.OK_CANCEL_OPTION);
+			if(res == JOptionPane.OK_OPTION) {
+				controleur.retirerTacheDuProjet(listTaches.getSelectedValue());
+			}
+		});
+
 //        btnGererTaches.addActionListener(e -> {
 //            String selected = listProjets.getSelectedValue();
 //            if (selected == null) {
@@ -329,27 +378,27 @@ public class VueListeProjets extends JFrame implements Observateur {
 //                JOptionPane.showMessageDialog(this, "Veuillez sélectionner un projet.");
 //            }
 //        });
-		
+
 		itemImporter.addActionListener(e -> {
-		    JFileChooser chooser = new JFileChooser();
-		    if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-		        String chemin = chooser.getSelectedFile().getAbsolutePath();
-		        try {
-		            controleur.importerProjetsDepuisJSONFIle(chemin, this);
-		        } catch (Exception ex) {
-		            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erreur d'import", JOptionPane.ERROR_MESSAGE);
-		        }
-		    }
+			JFileChooser chooser = new JFileChooser();
+			if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+				String chemin = chooser.getSelectedFile().getAbsolutePath();
+				try {
+					controleur.importerProjetsDepuisJSONFIle(chemin, this);
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(this, ex.getMessage(), "Erreur d'import", JOptionPane.ERROR_MESSAGE);
+				}
+			}
 		});
 
 		listProjets.addListSelectionListener(e -> {
 			if (actualisationEnCours || e.getValueIsAdjusting()) {
-		        return;
-		    }
-		    String selected = listProjets.getSelectedValue();
-		    if (selected != null) {
-		        controleur.selectionnerProjetCourant(selected);
-		    }
+				return;
+			}
+			String selected = listProjets.getSelectedValue();
+			if (selected != null) {
+				controleur.selectionnerProjetCourant(selected);
+			}
 		});
 
 		// chargement initial
@@ -364,18 +413,18 @@ public class VueListeProjets extends JFrame implements Observateur {
 
 	@Override
 	public void actualiser() {
-	    actualisationEnCours = true;
-	    try {
-	        String selected = listProjets.getSelectedValue();
-	        listModel.clear();
-	        for (Projet p : controleur.getTousLesProjets()) {
-	            listModel.addElement(p.getNom());
-	        }
-	        if (selected != null && listModel.contains(selected)) {
-	            listProjets.setSelectedValue(selected, false);
-	        }
-	    } finally {
-	        actualisationEnCours = false;
-	    }
+		actualisationEnCours = true;
+		try {
+			String selected = listProjets.getSelectedValue();
+			listModel.clear();
+			for (Projet p : controleur.getTousLesProjets()) {
+				listModel.addElement(p.getNom());
+			}
+			if (selected != null && listModel.contains(selected)) {
+				listProjets.setSelectedValue(selected, false);
+			}
+		} finally {
+			actualisationEnCours = false;
+		}
 	}
 }

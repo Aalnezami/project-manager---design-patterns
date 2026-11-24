@@ -194,12 +194,13 @@ public class MediateurFacade {
 	 * @param nom
 	 * @param nouvelleTache
 	 */
-	public void ajouterTacheAuProjet(String nom, Tache nouvelleTache) {
-		Projet prj = rechercherProjet(nom);
+	public void ajouterTacheAuProjet(String nom, int duree, Equipe eq) {
+		Projet prj = this.getProjetCourant();
 		if (prj == null) {
 			throw new IllegalArgumentException("Projet introuvable.");
 		}
-
+		
+		Tache nouvelleTache = new Tache(nom, duree, eq);
 		prj.ajouterTache(nouvelleTache);
 
 		List<ErreurProjet> erreurs = verificateur.verifierProjet(prj);
@@ -217,13 +218,13 @@ public class MediateurFacade {
 	 * @param nom
 	 * @param tacheARetirer
 	 */
-	public void retirerTachesDuProjet(String nom, Tache tacheARetirer) {
-		Projet prj = rechercherProjet(nom);
+	public void retirerTachesDuProjet(String nomTache) {
+		Projet prj = this.getProjetCourant();
 		if (prj == null) {
 			throw new IllegalArgumentException("Projet introuvable.");
 		}
-
-		prj.getTaches().remove(tacheARetirer);
+		Tache t = prj.getTacheByName(nomTache);
+		prj.getTaches().remove(t);
 		notifierObservateurs();
 	}
 

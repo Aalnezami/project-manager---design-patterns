@@ -91,8 +91,8 @@ public class GestionProjets implements Observable {
 	 * @param nom
 	 * @param nouvelleTache
 	 */
-	public void ajouterTacheAuProjet(String nom, Tache nouvelleTache) {
-		MF.ajouterTacheAuProjet(nom, nouvelleTache);
+	public void ajouterTacheAuProjet(String nom, int duree, Equipe eq) {
+		MF.ajouterTacheAuProjet(nom, duree, eq);
 	}
 
 	/**********************************************************
@@ -101,8 +101,8 @@ public class GestionProjets implements Observable {
 	 * @param nom
 	 * @param tacheARetirer
 	 */
-	public void retirerTachesDuProjet(String nom, Tache tacheARetirer) {
-		MF.retirerTachesDuProjet(nom, tacheARetirer);
+	public void retirerTachesDuProjet(String nomTache) {
+		MF.retirerTachesDuProjet(nomTache);
 	}
 
 	/**********************************************************

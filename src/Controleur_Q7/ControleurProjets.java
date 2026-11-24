@@ -75,12 +75,33 @@ public class ControleurProjets {
 			throw new RuntimeException("Erreur contrôleur (Modification) : " + e.getMessage());
 		}
 	}
+	
+	/**********************************************************
+	 * 
+	 * @param nomProjet
+	 * @param nouvelleDate
+	 */
+	public void modifierDateFinProjet(String nomProjet, LocalDate nouvelleDate) {
+		try {
+			modele.modifierDateFinProjet(nomProjet, nouvelleDate);
+		} catch (Exception e) {
+			throw new RuntimeException("Erreur contrôleur (Modification) : " + e.getMessage());
+		}
+	}
 
 	/**********************************************************
 	 * 
 	 */
-	public void ajouterTacheAuProjet() {
-
+	public void ajouterTacheAuProjet(String titre, int duree, Equipe eq) {
+		try {
+			modele.ajouterTacheAuProjet(titre, duree, eq);
+		} catch (Exception e) {
+			throw new RuntimeException("Erreur contrôleur (Modification) : " + e.getMessage());
+		}
+	}
+	
+	public void retirerTacheDuProjet(String nomTache) {
+		modele.retirerTachesDuProjet(nomTache);
 	}
 	
 	/**********************************************************
