@@ -120,6 +120,10 @@ public class ControleurProjets {
 	public void selectionnerProjetCourant(String nomProjet) {
 		modele.selectionnerProjetCourant(nomProjet);
 	}
+	
+	public Projet getProjetCourant() {
+		return modele.getProjetCourant();
+	}
 
 	public Projet rechercherProjet(String prj) {
 		return this.modele.rechercherProjet(prj);

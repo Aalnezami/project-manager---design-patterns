@@ -1,6 +1,9 @@
 package Vues_Q6;
 
 import javax.swing.*;
+
+import Controleur_Q7.ControleurProjets;
+
 import java.awt.*;
 import Facade_Q3.GestionProjets;
 import Observateur_Q6.Observateur;
@@ -11,9 +14,11 @@ public class VueProjet extends JFrame implements Observateur {
 	private GestionProjets modele;
 	private JTextArea zoneDetails;
 	private Projet projetActuel;
+	private ControleurProjets controleur;
 
-	public VueProjet(GestionProjets model) {
+	public VueProjet(GestionProjets model, ControleurProjets controleur) {
 		this.modele = model;
+		this.controleur = controleur;
 		this.modele.attacher(this);
 
 		setTitle("Details du projet sélectionné");
@@ -44,7 +49,7 @@ public class VueProjet extends JFrame implements Observateur {
 	 */
 	@Override
 	public void actualiser() {
-		Projet prj = modele.getProjetCourant();
+		Projet prj = controleur.getProjetCourant();
 		if (prj == null) {
             projetActuel = null;
             zoneDetails.setText("Aucun projet sélectionné!");

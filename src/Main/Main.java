@@ -14,6 +14,6 @@ public class Main {
 
         // creation des Vues reliées au Modèle (pour l'Observer) et au Contrôleur (pour les actions)
         new VueListeProjets(modele, controleur);
-        new VueProjet(modele); // La vue détail écoute le modèle
+        new VueProjet(modele, controleur); // La vue détail écoute le modèle
     }
 }
