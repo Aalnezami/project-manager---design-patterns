@@ -12,8 +12,7 @@ public class Main {
         // creation du Contrôleur relié au Modèle
         ControleurProjets controleur = new ControleurProjets(modele);
 
-        // creation des Vues reliées au Modèle (pour l'Observer) et au Contrôleur (pour les actions)
         new VueListeProjets(modele, controleur);
-        new VueProjet(modele, controleur); // La vue détail écoute le modèle
+        new VueProjet(modele, controleur);
     }
 }

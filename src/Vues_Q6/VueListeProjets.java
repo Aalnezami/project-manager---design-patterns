@@ -262,6 +262,9 @@ public class VueListeProjets extends JFrame implements Observateur {
 			}
 		});
 
+		/**********************************************************
+		 * Gestion d'import
+		 */
 		itemImporter.addActionListener(e -> {
 			JFileChooser chooser = new JFileChooser();
 			if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {

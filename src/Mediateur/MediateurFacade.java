@@ -300,10 +300,10 @@ public class MediateurFacade {
 
 			projets.add(p);
 			ajoute = true;
+			nbAjoute++;
 		}
 
 		if (ajoute) {
-			nbAjoute++;
 			this.notifierObservateurs();
 		}
 		this.dernierTotalImport = projetsImportes.size() + jsonReader.getRapportErreurs().size();
